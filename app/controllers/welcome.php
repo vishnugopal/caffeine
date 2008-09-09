@@ -1,12 +1,7 @@
 <?php
-class WelcomeController {
-    
-    
-    public function index()
-    {
-        view('welcome');
-    }
-    
-    
+class WelcomeController { 
+  public function index()
+  {
+    view('welcome');
+  } 
 }
-?>
