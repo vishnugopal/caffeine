@@ -41,11 +41,11 @@
   <table>
   <?php foreach($users as $user): ?>
     <tr>
+      <td>
+        <?php print_r($user->id())?>
+      </td>
       <td><?php 
-      $user->user_password_set("hari gopal");
-      echo $user->id();
-      $user->save();
-      echo $user->user_password(); 
+      print_r($user->photos());
       ?></td>
     </tr>
   <?php endforeach; ?>

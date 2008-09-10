@@ -26,6 +26,16 @@ class Base {
     return $BASE_CURRENT_TABLE_PRIMARY_KEY_FIELD;
   }
   
+  protected static function associations_set($associations_array) {
+    global $BASE_CURRENT_TABLE_ASSOCIATIONS;
+    $BASE_CURRENT_TABLE_ASSOCIATIONS = $associations_array;
+  }
+  
+  protected static function associations() {
+    global $BASE_CURRENT_TABLE_ASSOCIATIONS;
+    return $BASE_CURRENT_TABLE_ASSOCIATIONS;
+  }
+  
   protected static function database() {
     global $BASE_DATABASE;
     return $BASE_DATABASE;
@@ -89,7 +99,7 @@ class Base {
       
     return $this->database()->exec($sql); 
   }
-  
+    
   public function __call($method, $arguments) {
     if(isset($this->row[$method])) {
       return $this->row[$method];
@@ -99,8 +109,45 @@ class Base {
       }
       $property = substr($method, 0, strlen($method) - 4);
       $this->row[$property] = $arguments[0];
+    } elseif($this->association_exists($method)) {
+      return $this->association_find($method);
     } else {
       throw new Exception("Property not found in record.");
     }
   }
+  
+  private function association_exists($association_name) {
+   $associations = $this->associations();
+   return isset($associations['has_many'][$association_name]);
+  }
+  
+  private function association_foreign_key($association_name) {
+    $associations = $this->associations();
+    return $associations['has_many'][$association_name]['foreign_key_field'];
+  }
+  
+  private function association_table_name($association_name) {
+    $associations = $this->associations();
+    return $associations['has_many'][$association_name]['table_name'];
+  }
+  
+  private function association_model($association_name) {
+    $associations = $this->associations();
+    return $associations['has_many'][$association_name]['model'];
+  }
+  
+  private function association_find($association_name) {
+    load('model', $this->association_model($association_name));
+    $primary_key_field = self::primary_key_field();
+    $primary_key_value = self::database()->quote($this->$primary_key_field());
+    $conditions = $this->association_foreign_key($association_name) . ' = ' . $primary_key_value;
+    $association_model = $this->association_model($association_name);
+    $find_array = call_user_func("$association_model::find", 
+      array('conditions' => $conditions)
+    );
+    //print_r($find_array);
+    //$this->prep();
+    return $find_array;
+  }
+  
 }
