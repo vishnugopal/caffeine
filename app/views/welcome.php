@@ -33,10 +33,22 @@
 </head>
 <body>
   <h1>Welcome to Caffeine <?=CAFFEINE_VERSION?></h1>
-  <p>Congradulations! If you can see this page, Caffeine is setup and working correclty.</p>
+  <p>Congratulations! If you can see this page, Caffeine is setup and working correclty.</p>
   <p>
     To learn how to use Caffeine, read the <a href="http://code.google.com/p/caffeine-php/wiki/TableOfContents?tm=6">User Guide</a>
     or visit the <a href="http://caffeinephp.com">Community Forums</a>.
   </p>
+  <table>
+  <?php foreach($users as $user): ?>
+    <tr>
+      <td><?php 
+      $user->user_password_set("hari gopal");
+      echo $user->id();
+      $user->save();
+      echo $user->user_password(); 
+      ?></td>
+    </tr>
+  <?php endforeach; ?>
+  </table>
 </body>
 </html>

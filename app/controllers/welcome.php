@@ -2,6 +2,8 @@
 class WelcomeController { 
   public function index()
   {
-    view('welcome');
+    load('model', "User");
+    $template_variables = array('users' => User::find());
+    view('welcome', $template_variables);
   } 
 }

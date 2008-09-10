@@ -212,7 +212,6 @@ function load($strType, $strName, $boolCall = true)
   }
 }
 
-
 /**
   * Gets the value of a URL segment.
   *
@@ -393,6 +392,10 @@ function caffeine_router($arrConfig)
 function caffeine_init($arrConfig)
 {
   get_config('', $arrConfig, true);
+  
+  load('model', 'base');
+  Base::establish_connection('db');
+  
   $arrSegments = caffeine_router($arrConfig);
   $strControllerFile = CAFFEINE_ROOT . CAFFEINE_CONTROLLERS . $arrSegments['controller'] . CAFFEINE_EXT;
   $strControllerClass = $arrSegments['controller'] . "Controller";
