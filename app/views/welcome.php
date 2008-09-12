@@ -38,17 +38,5 @@
     To learn how to use Caffeine, read the <a href="http://code.google.com/p/caffeine-php/wiki/TableOfContents?tm=6">User Guide</a>
     or visit the <a href="http://caffeinephp.com">Community Forums</a>.
   </p>
-  <table>
-  <?php foreach($users as $user): ?>
-    <tr>
-      <td>
-        <?php print_r($user->id())?>
-      </td>
-      <td><?php 
-      print_r($user->photos());
-      ?></td>
-    </tr>
-  <?php endforeach; ?>
-  </table>
 </body>
 </html>
